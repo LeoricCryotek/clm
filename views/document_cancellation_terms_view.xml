@@ -41,9 +41,6 @@
 
                         </group>
                         <group>
-                            <field name="termination_for_non_payment" options="{'horizontal': True}" nolabel="1"/>
-                            <label for="termination_for_non_payment" string="Termination for Non-payment"/>
-
                             <field name="termination_for_cause" options="{'horizontal': True}" nolabel="1"/>
                             <label for="termination_for_cause" string="Termination for Cause"/>
 

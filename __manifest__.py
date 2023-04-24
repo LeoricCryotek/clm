@@ -15,6 +15,7 @@
         'views/document_cancellation_terms_view.xml',
         'views/form_menu_view.xml',
         'views/clm_report_filters.xml',
+        'views/contract_view.xml',
         'data/scheduled_action.xml',
     ],
     'application': True,

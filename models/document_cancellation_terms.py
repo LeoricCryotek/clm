@@ -19,7 +19,6 @@ class DocumentCancellationTerms(models.Model):
     early_termination_fee_amount = fields.Char(string="Early Termination Fee Amount", tracking=True)
     termination_for_cause = fields.Boolean(string="Termination for Cause", tracking=True)
     termination_upon_expiration = fields.Boolean(string="Termination upon Expiration", tracking=True)
-    termination_for_non_payment = fields.Boolean(string="Termination for Non-payment", tracking=True)
     start_date = fields.Date(string='Start Date', tracking=True)
     termination_date = fields.Date(string='Termination Date', compute='_compute_termination_date', tracking=True, store=True)
     days_left_to_termination = fields.Integer(string='Days Left to Termination',
@@ -98,10 +97,21 @@ class DocumentCancellationTerms(models.Model):
         docs = docs.filtered(lambda d: d.days_left_to_termination and d.days_left_to_cancel)
 
         for doc in docs:
-            days_left_to_termination = (doc.deadline_to_termination - today).days
-            days_left_to_cancel = (doc.deadline_to_cancel - today).days
+            days_left_to_termination = (doc.termination_date - today).days
+            days_left_to_cancel = (doc.cancellation_deadline - today).days
             doc.write({
                 'days_left_to_termination': days_left_to_termination,
                 'days_left_to_cancel': days_left_to_cancel,
             })
+
+    @api.model
+    def update_auto_renew(self):
+        today = fields.Date.today()
+        docs = self.search([('auto_renew', '=', True), ('termination_date', '=', today)])
+
+        for doc in docs:
+            doc.write({
+                'start_date': today,
+            })
+
     # Add other fields for cancellation terms as needed

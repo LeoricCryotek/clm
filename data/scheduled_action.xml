@@ -16,4 +16,18 @@
             <field name="active" eval="True"/>
         </record>
     </data>
+    <data noupdate="1">
+        <record id="update_auto_renew_action" model="ir.cron">
+            <field name="name">Update Auto Renew Documents</field>
+            <field name="model_id" ref="model_documents_document"/>
+            <field name="state">code</field>
+            <field name="code">model.update_auto_renew()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 00:01:00')"/>
+            <field name="doall" eval="False"/>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
 </odoo>
